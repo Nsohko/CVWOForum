@@ -34,7 +34,7 @@ const CreatePost: React.FC = () => {
 
             if (response.status === 201) {
                 // Successfully created the post
-                navigate("/"); // Redirect to homepage or another page
+                navigate(`/posts/${response.data.id}`); // Redirect to homepage or another page
             } else {
                 setError("Failed to create post");
             }

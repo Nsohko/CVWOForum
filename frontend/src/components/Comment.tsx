@@ -100,7 +100,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                 if (response.status === 201) {
                     alert("Reply posted successfully!");
                     setReplying(false); // Exit reply mode
-                    navigate(`/posts/${comment.post_id}/comments/${comment.id}`); // Reload the page
+                    navigate(0);
                 } else {
                     setError("Failed to post reply");
                 }
@@ -227,6 +227,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                                             >
                                                 {comment.content}
                                             </Typography>
+                                            <br />
                                             <Typography variant="body2" style={{ fontSize: "0.85rem", color: "black" }}>
                                                 Posted by {comment.username} on{" "}
                                                 {new Date(comment.created_at).toLocaleString(undefined, {

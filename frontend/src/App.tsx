@@ -1,5 +1,6 @@
 import Header from "./components/Header";
 import Home from "./pages/Home";
+import TopicPosts from "./pages/TopicPosts";
 import CreatePost from "./pages/CreatePost";
 import Post from "./pages/Post";
 import EditPost from "./pages/EditPost";
@@ -30,6 +31,8 @@ const App: React.FC = () => {
                     <Header />
                     <Routes>
                         <Route path="/" element={<Home />} />
+                        <Route path="/topics/" element={<TopicPosts />} />
+                        <Route path="/topics/:topic" element={<TopicPosts />} />
                         <Route path="/posts/:post_id" element={<Post />} />
                         <Route path="/posts/:post_id/comments/:comment_id" element={<ParentComment />} />
                         <Route path="/login" element={<Login />} />

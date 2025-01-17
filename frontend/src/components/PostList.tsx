@@ -26,6 +26,19 @@ const PostList: React.FC<PostListProps> = ({ posts }: PostListProps) => {
                         onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
                     >
                         <CardContent style={{ paddingBottom: "0px" }}>
+                            {/* Topic Display */}
+                            <Typography
+                                variant="subtitle2"
+                                style={{
+                                    color: "#ff5722",
+                                    fontWeight: "bold",
+                                    textTransform: "uppercase",
+                                    marginBottom: "4px",
+                                    fontSize: "0.875rem",
+                                }}
+                            >
+                                {post.topic}
+                            </Typography>
                             <Typography
                                 variant="h5"
                                 component="h2"

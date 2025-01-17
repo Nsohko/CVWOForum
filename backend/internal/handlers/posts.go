@@ -3,6 +3,7 @@ package handlers
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -14,7 +15,7 @@ import (
 	_ "modernc.org/sqlite"
 )
 
-func GetPosts(w http.ResponseWriter, r *http.Request) {
+func GetAllPosts(w http.ResponseWriter, r *http.Request) {
 	// Query the database for posts
 	rows, err := db.DB.Query(`
 		SELECT p.id, p.title, p.topic, p.user_id, COALESCE(u.username, 'Unknown') AS username, p.created_at
@@ -23,6 +24,43 @@ func GetPosts(w http.ResponseWriter, r *http.Request) {
 		ORDER BY p.created_at DESC
 	`)
 	if err != nil {
+		http.Error(w, `{"error": "Failed to fetch posts"}`, http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	posts := []models.Post{}
+	for rows.Next() {
+		var post models.Post
+		if err := rows.Scan(&post.ID, &post.Title, &post.Topic, &post.Author, &post.Username, &post.CreatedAt); err != nil {
+			http.Error(w, `{"error": "Failed to parse post data"}`, http.StatusInternalServerError)
+			return
+		}
+		posts = append(posts, post)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(w).Encode(posts); err != nil {
+		http.Error(w, `{"error": "Failed to encode posts"}`, http.StatusInternalServerError)
+		return
+	}
+}
+
+func GetPostsByTopic(w http.ResponseWriter, r *http.Request) {
+
+	topic := chi.URLParam(r, "topic")
+
+	// Query the database for posts
+	rows, err := db.DB.Query(`
+		SELECT p.id, p.title, p.topic, p.user_id, COALESCE(u.username, 'Unknown') AS username, p.created_at
+		FROM posts p
+		LEFT JOIN users u ON p.user_id = u.id
+		WHERE p.topic = ?
+		ORDER BY p.created_at DESC
+	`, topic)
+	if err != nil {
+		fmt.Println(err)
 		http.Error(w, `{"error": "Failed to fetch posts"}`, http.StatusInternalServerError)
 		return
 	}

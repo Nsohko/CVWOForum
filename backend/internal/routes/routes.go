@@ -10,7 +10,9 @@ import (
 
 func UnprotectedRoutes() func(r chi.Router) {
 	return func(r chi.Router) {
-		r.Get("/api/posts", handlers.GetPosts)
+		r.Get("/api/topics", handlers.GetTopics)
+		r.Get("/api/topics/{topic}", handlers.GetPostsByTopic)
+		r.Get("/api/posts", handlers.GetAllPosts)
 		r.Get("/api/posts/{post_id}", handlers.GetPostDetails)
 		r.Get("/api/posts/{post_id}/comments", handlers.GetPostComments) //get all comments tied to the post, without children comments
 		r.Get("/api/posts/{post_id}/comments/{comment_id}", handlers.GetComment)
@@ -34,7 +36,7 @@ func ProtectedRoutes() func(r chi.Router) {
 
 		r.Post("/api/posts", handlers.AddPost)
 
-		// Role-based access for comment actions
+		// Role-based access for post actions
 		r.Group(func(r chi.Router) {
 			// Middleware for role-based access
 			r.Use(auth.RoleMiddleware(handlers.GetPostOwnerID))
@@ -52,6 +54,14 @@ func ProtectedRoutes() func(r chi.Router) {
 
 			r.Patch("/api/posts/{post_id}/comments/{comment_id}", handlers.UpdateComment)
 			r.Delete("/api/posts/{post_id}/comments/{comment_id}", handlers.DeleteComment)
+		})
+
+		r.Group(func(r chi.Router) {
+			// Middleware for role-based access
+			r.Use(auth.AdminMiddleware())
+
+			r.Post("/api/topics", handlers.AddTopic)
+			r.Delete("/api/topics/{topic_name}", handlers.DeleteTopic)
 		})
 	}
 }

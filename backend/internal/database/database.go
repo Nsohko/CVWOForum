@@ -6,6 +6,7 @@ import (
 
 	"sample-go-app/internal/models"
 
+	"golang.org/x/crypto/bcrypt"
 	_ "modernc.org/sqlite"
 )
 
@@ -52,12 +53,37 @@ func InitTables() {
 			FOREIGN KEY(post_id) REFERENCES posts(id),
 			FOREIGN KEY(user_id) REFERENCES users(id)
 		);`,
+		`CREATE TABLE IF NOT EXISTS topics (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			topic STRING NOT NULL UNIQUE
+		);`,
 	}
 
 	for _, query := range queries {
 		_, err := DB.Exec(query)
 		if err != nil {
 			log.Fatalf("Failed to run migration: %v", err)
+		}
+	}
+
+	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("admin123"), bcrypt.DefaultCost)
+	// Insert default admin user
+	_, err := DB.Exec(`
+		INSERT OR IGNORE INTO users (username, password, isAdmin) 
+		VALUES ('admin123', ?, 1);
+	`, hashedPassword)
+	if err != nil {
+		log.Fatalf("Failed to insert admin user: %v", err)
+	}
+
+	// Insert default topics
+	commonTopics := []string{"Computer Science", "Mathematics", "Physics", "Chemistry", "Biology", "Literature", "Economics"}
+	for _, topic := range commonTopics {
+		_, err := DB.Exec(`
+			INSERT OR IGNORE INTO topics (topic) VALUES (?);
+		`, topic)
+		if err != nil {
+			log.Fatalf("Failed to insert topic '%s': %v", topic, err)
 		}
 	}
 }

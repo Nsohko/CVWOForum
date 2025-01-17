@@ -1,25 +1,30 @@
-import PostList from "../components/PostList";
-import Post from "../types/Post";
+import PostTopic, { getDefaultPostTopic } from "../types/PostTopic";
+import Topic from "../components/Topic";
+import { RootState } from "../redux/Store";
 import apiClient, { handleAxiosError } from "../utils/apiClient";
 import "../index.css";
 import React, { useEffect, useState } from "react";
-import { Button, TextField, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+// delete and add topic
 
 const Home: React.FC = () => {
-    const [posts, setPosts] = useState<Post[]>([]); // State to hold posts
-    const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
+    const [topics, setTopics] = useState<PostTopic[]>([]); // State to hold topics
+    const [newTopic, setNewTopic] = useState<PostTopic>(getDefaultPostTopic());
     const [loading, setLoading] = useState<boolean>(true); // State to manage loading state
     const [error, setError] = useState<string | null>(null); // State to manage errors
-    const [searchTerm, setSearchTerm] = useState<string>(""); // State for search term
-    const [sortBy, setSortBy] = useState<string>("date"); // State for sort criteria
+
+    const user = useSelector((state: RootState) => state.auth.user);
+    const isAdmin = user?.isAdmin === 1;
 
     // Fetch posts from the backend
     useEffect(() => {
-        const fetchPosts = async () => {
+        const fetchTopics = async () => {
             try {
-                const response = await apiClient.get("/api/posts");
-                setPosts(response.data); // Update posts state with fetched data
+                const response = await apiClient.get(`/api/topics`);
+                setTopics(response.data); // Update posts state with fetched data
             } catch (err) {
                 handleAxiosError(err, setError);
             } finally {
@@ -27,30 +32,41 @@ const Home: React.FC = () => {
             }
         };
 
-        fetchPosts();
+        fetchTopics();
     }, []); // Empty dependency array to run this effect only once on component mount
 
-    // Filter and sort posts based on search term and sort criteria
-    useEffect(() => {
-        let filtered = posts.filter(
-            (post) =>
-                post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                post.content.toLowerCase().includes(searchTerm.toLowerCase()),
-        );
-
-        // Sort the filtered posts based on the selected criterion
-        if (sortBy === "date") {
-            filtered = filtered.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-        } else if (sortBy === "title") {
-            filtered = filtered.sort((a, b) => a.title.localeCompare(b.title));
+    // Function to add a new topic
+    const handleAddTopic = async () => {
+        if (newTopic.topic_name === "") {
+            alert("Please provide a valid topic name");
+            return;
         }
+        try {
+            const response = await apiClient.post(`/api/topics`, newTopic);
+            setTopics((prev) => [...prev, response.data]); // Add new topic to the state
+            setNewTopic(getDefaultPostTopic()); // Reset input field
+        } catch (err) {
+            handleAxiosError(err, setError);
+        }
+    };
 
-        setFilteredPosts(filtered);
-    }, [searchTerm, sortBy, posts]); // Re-run whenever searchTerm, sortBy, or posts change
+    // Function to delete a topic
+    const handleDeleteTopic = async (topic: PostTopic) => {
+        if (window.confirm("Are you sure you want to delete this topic?")) {
+            try {
+                await apiClient.delete(`/api/topics/${topic.topic_name}`);
+                alert("Topic deleted successfully!");
+                setTopics((prev) => prev.filter((t) => t.topic_name !== topic.topic_name)); // Remove topic from the state
+            } catch (err) {
+                handleAxiosError(err, setError);
+            }
+        }
+    };
 
     return (
         <>
             <h3>Welcome to Sai forum.</h3>
+
             <Link to="/create-post" style={{ textDecoration: "none" }}>
                 <Button variant="contained" color="secondary">
                     Create a Post
@@ -58,30 +74,56 @@ const Home: React.FC = () => {
             </Link>
             <br />
             <br />
-            {/* Search Bar */}
-            <TextField
-                label="Search"
-                variant="outlined"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                style={{ marginBottom: "20px", width: "30%" }}
-            />
-            {/* Sort By Dropdown */}
-            <FormControl style={{ marginBottom: "20px", width: "15%" }}>
-                <InputLabel>Sort By</InputLabel>
-                <Select value={sortBy} onChange={(e) => setSortBy(e.target.value)} label="Sort By">
-                    <MenuItem value="date">Date</MenuItem>
-                    <MenuItem value="title">Title</MenuItem>
-                </Select>
-            </FormControl>
-            <br />
             {/* Render loading, error, or the posts */}
             {loading ? (
-                <p>Loading posts...</p>
+                <p>Loading...</p>
             ) : error ? (
                 <p className="error">{error}</p>
             ) : (
-                <PostList posts={filteredPosts} />
+                <div>
+                    {isAdmin && (
+                        <div>
+                            <TextField
+                                label="New Topic"
+                                value={newTopic.topic_name}
+                                onChange={(e) => setNewTopic({ topic_name: e.target.value })}
+                                variant="outlined"
+                                size="small"
+                                required
+                            />
+                            <Button
+                                onClick={handleAddTopic}
+                                variant="contained"
+                                color="primary"
+                                style={{ marginLeft: "10px" }}
+                            >
+                                Add Topic
+                            </Button>
+                        </div>
+                    )}
+                    <div style={{ width: "80vw", maxWidth: "1200px", margin: "auto" }}>
+                        <Topic title="All Posts" link="/topics/" />
+                        {topics.map((topic) => (
+                            <div
+                                key={topic.topic_name}
+                                style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
+                            >
+                                <Topic title={topic.topic_name} link={`/topics/${topic.topic_name}`} />
+                                {isAdmin && (
+                                    <Button
+                                        onClick={() => handleDeleteTopic(topic)}
+                                        variant="contained"
+                                        color="secondary"
+                                        size="small"
+                                        style={{ marginLeft: "10px" }}
+                                    >
+                                        Delete
+                                    </Button>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
             )}
         </>
     );

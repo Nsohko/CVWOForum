@@ -28,7 +28,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ post }: PostDetailsProps) => 
             try {
                 await apiClient.delete(`/api/posts/${post_id}`);
                 alert("Post deleted successfully!");
-                navigate("/"); // Redirect to home page after delete
+                navigate(`/${post.topic}`); // Redirect to home page after delete
             } catch (err) {
                 handleAxiosError(err, setError, navigate);
                 alert("Error deleting post");
@@ -48,14 +48,25 @@ const PostDetails: React.FC<PostDetailsProps> = ({ post }: PostDetailsProps) => 
                     }}
                 >
                     <CardContent>
-                        <Typography component="p">Post Details</Typography>
+                        <Typography
+                            variant="subtitle2"
+                            style={{
+                                color: "#ff5722",
+                                fontWeight: "bold",
+                                textTransform: "uppercase",
+                                marginBottom: "4px",
+                                fontSize: "0.875rem",
+                            }}
+                        >
+                            {post.topic}
+                        </Typography>
                         <Typography variant="h5" component="h5">
                             {post.title}
                         </Typography>
                         <Typography color="textSecondary" gutterBottom>
                             {`by ${post.username}`}
                         </Typography>
-                        <Typography variant="body2" component="p" style={{ marginBottom: "1rem" }}>
+                        <Typography color="textSecondary" style={{ marginBottom: "1rem" }}>
                             Posted on:{" "}
                             {new Date(post.created_at).toLocaleString(undefined, {
                                 year: "numeric",
@@ -85,9 +96,9 @@ const PostDetails: React.FC<PostDetailsProps> = ({ post }: PostDetailsProps) => 
                             </Button>
                         </>
                     )}
-                    <Link to="/">
+                    <Link to={`/topics/${post.topic}`}>
                         <Button variant="contained" color="secondary">
-                            Back to home
+                            Back to posts
                         </Button>
                     </Link>
                     <Button variant="contained" color="secondary" onClick={() => navigate(-1)}>
