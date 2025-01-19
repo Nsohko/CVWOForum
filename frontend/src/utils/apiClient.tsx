@@ -6,19 +6,20 @@ const apiClient = axios.create({
     withCredentials: true, // Automatically include cookies
 });
 
+// helper function to handle Axios errors when communicating with the server
 export const handleAxiosError = (
     err: unknown,
     setError: (message: string) => void,
     navigate?: ReturnType<typeof useNavigate>,
 ) => {
     console.log(err);
+
     if (isAxiosError(err)) {
         const statusCode = err.response?.status;
         const errorMessage = err.response?.data?.error || "An error occurred";
 
         console.log("Error Message:" + errorMessage);
         setError("Error: " + errorMessage);
-
         if (statusCode == 401) {
             apiClient.get(`/api/logout`);
             if (navigate) {

@@ -2,6 +2,7 @@ package models
 
 import "time"
 
+// Models a comment (both top-level and nested)
 type Comment struct {
 	ID        int       `json:"id"`
 	PostID    int       `json:"post_id"`

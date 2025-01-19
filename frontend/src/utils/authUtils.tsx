@@ -1,5 +1,3 @@
-// utils/authUtils.ts
-
 import { AppDispatch } from "../redux/Store";
 import apiClient from "../utils/apiClient";
 import { loginSuccess } from "../redux/AuthSlice";

@@ -9,6 +9,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom"; // To handle redirects
 import { useDispatch } from "react-redux";
 
+// Page to log in
 function Login() {
     const [userData, setUserData] = useState<User>(getDefaultUser());
     const [error, setError] = useState("");

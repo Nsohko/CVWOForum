@@ -8,13 +8,15 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
+// Page for users to create an account
 function CreateAccount() {
     const [userData, setUserData] = useState<User>(getDefaultUser);
     const [error, setError] = useState("");
-    const navigate = useNavigate(); // React Router hook for navigation
+    const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch<AppDispatch>();
 
+    // Manages form submission
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError("");

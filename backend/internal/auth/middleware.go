@@ -7,7 +7,7 @@ import (
 	"github.com/go-chi/jwtauth/v5"
 )
 
-// AdminMiddleware enforces admin-only access
+// Enforces admin-only access (i.e. for routes that ONLY admins are allowed to access)
 func AdminMiddleware() func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -34,11 +34,13 @@ func AdminMiddleware() func(http.Handler) http.Handler {
 	}
 }
 
-// RoleMiddleware enforces role-based access
+// Enforces flexible role-based access
+// Checks for either admin or ownership
+// resourceOwnerID func gets the author's id for a particular resource (e.g. post / comment)
 func RoleMiddleware(resourceOwnerIDFunc func(r *http.Request) (int, error)) func(http.Handler) http.Handler {
-
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			// Extract JWT claims from the context
 			_, claims, _ := jwtauth.FromContext(r.Context())
 			rawUserData, userExists := claims["userData"].(map[string]interface{}) // Extract the user claim as a map
 
@@ -53,6 +55,7 @@ func RoleMiddleware(resourceOwnerIDFunc func(r *http.Request) (int, error)) func
 
 			ownerID, _ := resourceOwnerIDFunc(r)
 
+			// if user is neither adminn nor the owner of the resource
 			if !(isAdmin == 1 || userID == ownerID) {
 				http.Error(w, "Forbidden", http.StatusForbidden)
 				return

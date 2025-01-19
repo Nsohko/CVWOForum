@@ -11,6 +11,7 @@ interface PostDetailsProps {
     post: Post;
 }
 
+// Display the details of a post
 const PostDetails: React.FC<PostDetailsProps> = ({ post }: PostDetailsProps) => {
     const { post_id } = useParams<{ post_id: string }>();
     const navigate = useNavigate();
@@ -19,16 +20,20 @@ const PostDetails: React.FC<PostDetailsProps> = ({ post }: PostDetailsProps) => 
 
     // Access user ID from Redux store
     const user = useSelector((state: RootState) => state.auth.user);
-    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated) && user != null;
     const isAuthor = isAuthenticated && (user?.isAdmin === 1 || user?.id === post.author); // Compare logged-in user ID with post author ID
 
     // Handle post deletion
     const handleDelete = async () => {
+        if (!isAuthenticated || !isAuthor) {
+            alert("No permission!");
+            return;
+        }
         if (window.confirm("Are you sure you want to delete this post?")) {
             try {
                 await apiClient.delete(`/api/posts/${post_id}`);
                 alert("Post deleted successfully!");
-                navigate(`/${post.topic}`); // Redirect to home page after delete
+                navigate(`/topics/${post.topic}`); // Redirect to home page after delete
             } catch (err) {
                 handleAxiosError(err, setError, navigate);
                 alert("Error deleting post");

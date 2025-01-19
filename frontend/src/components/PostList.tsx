@@ -8,6 +8,7 @@ interface PostListProps {
     posts: Post[];
 }
 
+// Display a list of posts
 const PostList: React.FC<PostListProps> = ({ posts }: PostListProps) => {
     return (
         <div style={{ width: "80vw", maxWidth: "1200px", margin: "auto" }}>

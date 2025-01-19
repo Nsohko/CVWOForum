@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@mui/material";
 
+// Page to render Post, one parent comment and its subcomments
 const ParentComment: React.FC = () => {
     const { post_id } = useParams<{ post_id: string }>();
     const { comment_id } = useParams<{ comment_id: string }>();
@@ -27,12 +28,12 @@ const ParentComment: React.FC = () => {
                 setPost(postResponse.data); // Update post state with fetched data
 
                 const parentCommentResponse = await apiClient.get(`/api/posts/${post_id}/comments/${comment_id}`);
-                setParentComment(parentCommentResponse.data); // Update post state with fetched data
+                setParentComment(parentCommentResponse.data); // Update parent comment state with fetched data
 
                 const subCommentsResponse = await apiClient.get(
                     `/api/posts/${post_id}/comments/${comment_id}/subcomments`,
                 );
-                setSubComments(subCommentsResponse.data); // Update post state with fetched data
+                setSubComments(subCommentsResponse.data); // Update subcomment state with fetched data
             } catch (err) {
                 handleAxiosError(err, setError);
             } finally {

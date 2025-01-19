@@ -18,14 +18,16 @@ func main() {
 	fmt.Println("For debugging, admin username/password: admin123")
 	fmt.Println("Non-admin username/password: 123")
 
+	// Initialize Database
 	db.InitDatabase()
 	// Initialize JWT
 	auth.InitJWT()
 
+	// Setup router and routes
 	r := router.Setup()
 
 	// Start the server
-	port := ":8080" // Change the port if needed
+	port := ":8080"
 	log.Printf("Starting server on port %s...", port)
 	if err := http.ListenAndServe(port, r); err != nil {
 		log.Fatal(err)

@@ -10,12 +10,14 @@ import { useParams, useNavigate } from "react-router-dom"; // For navigation
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 
+// Page to render a post ad its top-level comments
 const Posts: React.FC = () => {
     const { post_id } = useParams<{ post_id: string }>();
     const navigate = useNavigate();
 
+    const user = useSelector((state: RootState) => state.auth.user);
     // Check if user is authenticated using Redux state
-    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated) && user != null;
 
     const [post, setPost] = useState<Post>(getDefaultPost()); // State to hold posts
     const [comments, setComments] = useState<PostComment[]>([]); // State to hold posts
@@ -28,8 +30,6 @@ const Posts: React.FC = () => {
     // Initialize `newComment` with post_id from params or default to 0 if undefined
     const [newComment, setNewComment] = useState<PostComment>(getDefaultPostComment()); // Set the post_id from URL params or default to 0
 
-    const user = useSelector((state: RootState) => state.auth.user);
-
     // Fetch post from the backend
     useEffect(() => {
         const fetchPost = async () => {
@@ -38,7 +38,7 @@ const Posts: React.FC = () => {
                 setPost(postResponse.data); // Update post state with fetched data
 
                 const commentsResponse = await apiClient.get(`/api/posts/${post_id}/comments`);
-                setComments(commentsResponse.data); // Update post state with fetched data
+                setComments(commentsResponse.data); // Update comments state with fetched data
             } catch (err) {
                 handleAxiosError(err, setError, navigate);
             } finally {
@@ -52,7 +52,7 @@ const Posts: React.FC = () => {
     // Handle adding a comment
     const handleAddComment = async () => {
         try {
-            if (user == null) {
+            if (!isAuthenticated) {
                 setError("Not logged in");
                 return;
             }

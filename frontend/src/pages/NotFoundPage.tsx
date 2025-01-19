@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 
+// Page for any unknow routes
 const NotFoundPage: React.FC = () => {
     return (
         <div>

@@ -11,6 +11,8 @@ interface TextInputProps {
     handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
 }
 
+// Generic component for when users need to input post details
+// Used in CreatePost and EditPost
 const TextInput: React.FC<TextInputProps> = ({ newPost, setNewPost, handleSubmit }: TextInputProps) => {
     const [topics, setTopics] = useState<PostTopic[]>([]);
     const [loading, setLoading] = useState<boolean>(true); // State to manage loading state

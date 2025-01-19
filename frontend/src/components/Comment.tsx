@@ -13,31 +13,36 @@ interface CommentProps {
     comment: PostComment;
 }
 
+// Component consisting of a single comment
 const Comment: React.FC<CommentProps> = ({ comment }) => {
     const [error, setError] = useState<string | null>(null); // State to manage errors
-    const location = useLocation();
+    const location = useLocation(); // Current URL location
     const navigate = useNavigate(); // Use React Router"s navigate function for redirection.
 
-    const [editing, setEditing] = useState<boolean>(false);
     const [replying, setReplying] = useState<boolean>(false); // State for reply input toggle
-    const [newComment, setNewComment] = useState<PostComment>(getDefaultPostComment());
+    const [editing, setEditing] = useState<boolean>(false); // State for edit input toggle
+    const [newComment, setNewComment] = useState<PostComment>(getDefaultPostComment()); // Stores edited comment temporarily
 
     // Access user ID from Redux store
     const user = useSelector((state: RootState) => state.auth.user);
 
-    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-    const isAuthor = isAuthenticated && (user?.isAdmin === 1 || user?.id === comment.author); // Compare logged-in user ID with post author ID
+    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated) && user != null; // Checks if user is authenticated
+    const isAuthor = isAuthenticated && (user?.isAdmin === 1 || user?.id === comment.author); // Compare logged-in user ID with comment author ID
 
     // Handle comment deletion
     const handleDelete = async () => {
+        if (!isAuthenticated || !isAuthor) {
+            alert("No permission!");
+            return;
+        }
         if (window.confirm("Are you sure you want to delete this comment?")) {
             try {
                 await apiClient.delete(`/api/posts/${comment.post_id}/comments/${comment.id}`);
                 alert("Comment deleted successfully!");
 
-                // Check if the current page is the parent comment"s page
+                // Check if we are displaying the comment as a parent comment
                 if (location.pathname === `/posts/${comment.post_id}/comments/${comment.id}`) {
-                    // If we are on the comment page of the parent comment, navigate to the post itself
+                    // If so, navigate back the post itself
                     navigate(`/posts/${comment.post_id}`);
                 } else {
                     // Otherwise, reload the page or navigate back to the comments section
@@ -51,6 +56,10 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
 
     // Handle comment edit
     const handleEdit = async () => {
+        if (!isAuthenticated || !isAuthor) {
+            alert("No permission!");
+            return;
+        }
         try {
             if (editing) {
                 // Submit the edited comment
@@ -113,7 +122,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
         }
     };
 
-    // Cancel the edit and reset the content
+    // Cancel the edit / reply and reset the content
     const handleCancel = () => {
         setNewComment(getDefaultPostComment()); // Reset the content to the original value
         setEditing(false); // Exit edit mode

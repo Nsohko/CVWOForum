@@ -3,10 +3,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-// Persist config for the auth slice
+// Persist config for the auth slice on browser close
 const persistConfig = {
-    key: "auth", // The key to store the persisted state
-    storage, // This uses localStorage by default
+    // The key to store the persisted state
+    key: "auth",
+    // This uses localStorage by default, which is okay since sensitive info isnt being stored
+    // The password is manually cleared, and the JWT token is stored as http-only cookie
+    storage,
 };
 
 // Persist the auth reducer
@@ -19,7 +22,7 @@ const store = configureStore({
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
-            serializableCheck: false, // Disable warnings for non-serializable data if needed
+            serializableCheck: false,
         }),
 });
 

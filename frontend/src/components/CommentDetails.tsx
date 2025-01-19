@@ -9,6 +9,7 @@ interface CommentDetailsProps {
     subComments: PostComment[]; // The array of subcomments
 }
 
+// Display a parent comment and all its subcomments
 const CommentDetails: React.FC<CommentDetailsProps> = ({ parentComment, subComments }) => {
     return (
         <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>

@@ -1,4 +1,4 @@
-// Define the post type
+// Represents a user
 type User = {
     id: number;
     username: string;
@@ -6,7 +6,7 @@ type User = {
     isAdmin: number;
 };
 
-// Utility function to initialize default values
+// Utility function to initialize default placeholder values
 export const getDefaultUser = (): User => {
     return {
         id: -1,

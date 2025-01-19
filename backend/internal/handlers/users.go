@@ -15,7 +15,9 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// Create a new account
 func CreateAccount(w http.ResponseWriter, r *http.Request) {
+	// Parse the username and unhashed password into a new user
 	var newAccount models.User
 	if err := json.NewDecoder(r.Body).Decode(&newAccount); err != nil {
 		http.Error(w, `{"error": "Invalid input"}`, http.StatusBadRequest)
@@ -29,11 +31,14 @@ func CreateAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Update the password with the hashed version
 	newAccount.Password = string(hashedPassword)
 
+	// Insert the new user into the database
 	_, err = db.DB.Exec("INSERT INTO users (username, password) VALUES (?, ?)", newAccount.Username, newAccount.Password)
 	if err != nil {
 		// Check for a UNIQUE constraint violation using error message
+		// This ensures no duplication of username
 		if strings.Contains(err.Error(), "UNIQUE constraint failed: users.username") {
 			http.Error(w, `{"error": "This username is already taken. Please choose another one"}`, http.StatusConflict)
 			return
@@ -48,15 +53,17 @@ func CreateAccount(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(`{"message": "Account created successfully"}`))
 }
 
+// Login user
 func Login(w http.ResponseWriter, r *http.Request) {
+	// Parse the username and unhashed password
 	var account models.User
 	if err := json.NewDecoder(r.Body).Decode(&account); err != nil {
 		http.Error(w, `{"error": "Invalid input"}`, http.StatusBadRequest)
 		return
 	}
 
+	// Get the user info currently stored in the database
 	row := db.DB.QueryRow("SELECT id, username, password, isAdmin FROM users WHERE username = ?", account.Username)
-
 	storedAccount := models.User{}
 	// Scan the result into the struct
 	if err := row.Scan(&storedAccount.ID, &storedAccount.Username, &storedAccount.Password, &storedAccount.IsAdmin); err != nil {
@@ -75,26 +82,34 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Clear any token currently in the cache
 	auth.ClearTokenCookie(w)
 
+	// Delete any sensitive info (password) before sending the user's details back
 	storedAccount.Password = ""
 	token, err := auth.GenerateToken(storedAccount)
 	if err != nil {
 		http.Error(w, `{"error": "Failed to generate token"}`, http.StatusInternalServerError)
 		return
 	}
+
+	// set the JWT as a cookie
 	auth.SetTokenCookie(w, token)
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(`{"message": "Login successful"}`))
 }
 
+// Logout user
 func Logout(w http.ResponseWriter, r *http.Request) {
+	// Clear any currently stored JWT cookies
 	auth.ClearTokenCookie(w)
 	w.Write([]byte(`{"message": "Logged out successfully"}`))
 }
 
+// Protected route to validate users upon log in
 func Protected(w http.ResponseWriter, r *http.Request) {
+	// Get the token
 	_, claims, _ := jwtauth.FromContext(r.Context())
 	// Retrieve userData from the claims
 	userData, ok := claims["userData"].(map[string]interface{}) // Type assertion for nested data

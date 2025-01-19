@@ -1,4 +1,4 @@
-// Define the post type
+// Represents a post
 type Post = {
     id: number;
     title: string;
@@ -9,7 +9,7 @@ type Post = {
     created_at: string;
 };
 
-// Utility function to initialize default values
+// Utility function to initialize default placeholder post
 export const getDefaultPost = (): Post => {
     return {
         id: -1,

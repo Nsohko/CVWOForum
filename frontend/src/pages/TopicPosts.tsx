@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { Button, TextField, FormControl, InputLabel, Select, MenuItem, Typography } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 
+// Page to render all the posts attached to a particular topic
 const TopicPosts: React.FC = () => {
     const { topic } = useParams<{ topic: string }>();
     const [posts, setPosts] = useState<Post[]>([]); // State to hold posts
@@ -19,6 +20,8 @@ const TopicPosts: React.FC = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
+                // if topic was provided, get posts attached to it
+                // else get all posts
                 const response = topic
                     ? await apiClient.get(`/api/topics/${topic}`)
                     : await apiClient.get(`/api/posts`);

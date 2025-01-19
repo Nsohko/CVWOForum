@@ -8,6 +8,7 @@ interface CommentListProps {
     comments: PostComment[];
 }
 
+// display a list of comments
 const CommentList: React.FC<CommentListProps> = ({ comments }: CommentListProps) => {
     return (
         <div style={{ width: "30vw", margin: "auto" }}>

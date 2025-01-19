@@ -9,6 +9,8 @@ interface AccountInputProps {
     action: string;
 }
 
+// Generic component for when users are needed to input their username / password
+// Used in CreateAccount & Login
 const AccountInput: React.FC<AccountInputProps> = ({
     userData,
     setUserData,

@@ -12,11 +12,11 @@ import (
 var TokenAuth *jwtauth.JWTAuth
 
 func InitJWT() {
-	// Replace "secret-key" with a secure secret string
+	// "secret-key" is a placeholder for now
 	TokenAuth = jwtauth.New("HS256", []byte("secret-key"), nil)
 }
 
-// GenerateToken generates a JWT token with a given user ID and expiry.
+// Generate a JWT token for a particular user.
 func GenerateToken(userData models.User) (string, error) {
 	claims := map[string]interface{}{
 		"userData": userData,
@@ -26,21 +26,21 @@ func GenerateToken(userData models.User) (string, error) {
 	return tokenString, err
 }
 
-// SetTokenCookie sets the JWT as a secure cookie
+// Set JWT as a secure http-only cookie
 func SetTokenCookie(w http.ResponseWriter, token string) {
 	cookie := &http.Cookie{
 		Name:     "jwt",
 		Value:    token,
 		Path:     "/",
 		HttpOnly: true,
-		Secure:   true, // Set to true for production (HTTPS only)
+		Secure:   true,
 		SameSite: http.SameSiteLaxMode,
 		Expires:  time.Now().Add(time.Hour * 72),
 	}
 	http.SetCookie(w, cookie)
 }
 
-// ClearTokenCookie clears the JWT cookie
+// Clear the JWT token
 func ClearTokenCookie(w http.ResponseWriter) {
 	cookie := &http.Cookie{
 		Name:     "jwt",

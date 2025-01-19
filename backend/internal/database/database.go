@@ -27,6 +27,7 @@ func InitDatabase() {
 }
 
 func InitTables() {
+	// initialise tables if not created yet
 	queries := []string{
 		`CREATE TABLE IF NOT EXISTS users (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -66,8 +67,9 @@ func InitTables() {
 		}
 	}
 
+	// Calculate hashed password for admin user
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("admin123"), bcrypt.DefaultCost)
-	// Insert default admin user
+	// Insert default admin user for debugging
 	_, err := DB.Exec(`
 		INSERT OR IGNORE INTO users (username, password, isAdmin) 
 		VALUES ('admin123', ?, 1);

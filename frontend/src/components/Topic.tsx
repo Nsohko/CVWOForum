@@ -9,6 +9,7 @@ interface TopicProps {
     link: string;
 }
 
+// Component to display a single topic bubble
 const Topic: React.FC<TopicProps> = ({ title, link }) => {
     return (
         <Link to={link} style={{ textDecoration: "none" }}>

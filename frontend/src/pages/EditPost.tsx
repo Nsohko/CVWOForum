@@ -5,6 +5,7 @@ import "../index.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+// Page to edit a post
 const EditPost: React.FC = () => {
     const { post_id } = useParams<{ post_id: string }>();
 

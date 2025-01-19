@@ -7,8 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { Button, AppBar, Toolbar, Typography } from "@mui/material";
 
+// the header for the app
 const Header: React.FC = () => {
-    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+    const user = useSelector((state: RootState) => state.auth.user);
+    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated) && user != null; // Checks if user is authenticated
     const dispatch = useDispatch();
     const location = useLocation();
 
@@ -20,17 +22,21 @@ const Header: React.FC = () => {
     return (
         <AppBar position="static">
             <Toolbar>
+                {isAuthenticated ? <>{user.username}</> : <></>}
                 <Typography variant="h6" align="center" style={{ flexGrow: 1 }}>
                     <Link to="/" style={{ color: "inherit", textDecoration: "none" }}>
                         Sai Forum
                     </Link>
                 </Typography>
                 {isAuthenticated ? (
-                    <Link to="/">
-                        <Button color="inherit" onClick={handleLogout}>
-                            Logout
-                        </Button>
-                    </Link>
+                    <>
+                        <br />
+                        <Link to="/">
+                            <Button color="inherit" onClick={handleLogout}>
+                                Logout
+                            </Button>
+                        </Link>
+                    </>
                 ) : (
                     <>
                         {location.pathname !== "/create_account" && (

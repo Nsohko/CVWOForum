@@ -13,8 +13,9 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
+// Get the Comment details from its ID
 func GetComment(w http.ResponseWriter, r *http.Request) {
-	// Extract the post ID from the route parameter
+	// Extract the comment ID from the route parameter
 	commentID := chi.URLParam(r, "comment_id")
 
 	row := db.DB.QueryRow(`
@@ -25,7 +26,7 @@ func GetComment(w http.ResponseWriter, r *http.Request) {
 	`, commentID)
 
 	comment := models.Comment{}
-	// Scan the result into the struct
+	// Scan the result into the comment
 	if err := row.Scan(&comment.ID, &comment.PostID, &comment.Author, &comment.Username, &comment.Content, &comment.CreatedAt); err != nil {
 		if err == sql.ErrNoRows {
 			http.Error(w, `{"error": "Comment not found"}`, http.StatusNotFound)
@@ -44,7 +45,7 @@ func GetComment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// GetSubcomments retrieves all subcomments for a given comment
+// Retrieve all subcomments for a given comment
 func GetSubComments(w http.ResponseWriter, r *http.Request) {
 	// Extract the comment ID from the URL parameter
 	commentID := chi.URLParam(r, "comment_id")
@@ -85,13 +86,13 @@ func GetSubComments(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// AddSubComment adds a new subcomment to a comment
+// Add a new subcomment to a comment
 func AddSubComment(w http.ResponseWriter, r *http.Request) {
 	// Extract the post/comment ID from the URL parameter
 	postID := chi.URLParam(r, "post_id")
 	commentID := chi.URLParam(r, "comment_id")
 
-	// Parse the request body into a Comment model
+	// Parse the request body into a new comment
 	subcomment := &models.Comment{}
 	if err := json.NewDecoder(r.Body).Decode(subcomment); err != nil {
 		http.Error(w, `{"error": "Invalid request body"}`, http.StatusBadRequest)
@@ -111,7 +112,7 @@ func AddSubComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Retrieve the last inserted ID for the subcomment
+	// Retrieve the last inserted ID for the subcomment, and update subcomment
 	id, _ := res.LastInsertId()
 	subcomment.ID = int(id)
 	subcomment.PostID, _ = strconv.Atoi(postID)
@@ -125,12 +126,12 @@ func AddSubComment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// UpdateComment updates an existing comment or subcomment
+// Update an existing comment
 func UpdateComment(w http.ResponseWriter, r *http.Request) {
 	// Extract the comment ID from the route parameter
 	commentID := chi.URLParam(r, "comment_id")
 
-	// Parse the request body into a Comment model
+	// Parse the request body into a Comment
 	comment := &models.Comment{}
 	if err := json.NewDecoder(r.Body).Decode(comment); err != nil {
 		http.Error(w, `{"error": "Invalid request body"}`, http.StatusBadRequest)
@@ -163,14 +164,59 @@ func UpdateComment(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(`{"success": true}`))
 }
 
-// DeleteComment deletes an existing comment or subcomment
+// Delete subcomments recursively
+func DeleteSubComments(tx *sql.Tx, parentID string) error {
+	// Fetch subcomments of the given parentID
+	rows, err := tx.Query(`SELECT id FROM comments WHERE parent_id = ?`, parentID)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	// Iterate through subcomments and delete them recursively
+	for rows.Next() {
+		var subcommentID string
+		if err := rows.Scan(&subcommentID); err != nil {
+			return err
+		}
+
+		// Recursively delete subcomments
+		if err := DeleteSubComments(tx, subcommentID); err != nil {
+			return err
+		}
+
+		// Delete the subcomment itself
+		if _, err := tx.Exec(`DELETE FROM comments WHERE id = ?`, subcommentID); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+// Delete a comment and all its subcomments
 func DeleteComment(w http.ResponseWriter, r *http.Request) {
 	// Extract the comment ID from the route parameter
 	commentID := chi.URLParam(r, "comment_id")
 
-	// Execute the DELETE query
-	res, err := db.DB.Exec("DELETE FROM comments WHERE id = ?", commentID)
+	// Begin a transaction
+	tx, err := db.DB.Begin()
 	if err != nil {
+		http.Error(w, `{"error": "Failed to start transaction"}`, http.StatusInternalServerError)
+		return
+	}
+
+	// Attempt to delete subcomments recursively
+	if err := DeleteSubComments(tx, commentID); err != nil {
+		tx.Rollback()
+		http.Error(w, `{"error": "Failed to delete subcomments"}`, http.StatusInternalServerError)
+		return
+	}
+
+	// Delete the main comment
+	res, err := tx.Exec(`DELETE FROM comments WHERE id = ?`, commentID)
+	if err != nil {
+		tx.Rollback()
 		http.Error(w, `{"error": "Failed to delete comment"}`, http.StatusInternalServerError)
 		return
 	}
@@ -178,14 +224,15 @@ func DeleteComment(w http.ResponseWriter, r *http.Request) {
 	// Check if any rows were affected
 	affected, _ := res.RowsAffected()
 	if affected == 0 {
+		tx.Rollback()
 		http.Error(w, `{"error": "Comment not found"}`, http.StatusNotFound)
 		return
 	}
 
-	// Execute the DELETE query
-	_, err = db.DB.Exec("DELETE FROM comments WHERE parent_id = ?", commentID)
-	if err != nil {
-		http.Error(w, `{"error": "Failed to delete subcomments"}`, http.StatusInternalServerError)
+	// Commit the transaction
+	if err := tx.Commit(); err != nil {
+		tx.Rollback()
+		http.Error(w, `{"error": "Failed to commit transaction"}`, http.StatusInternalServerError)
 		return
 	}
 
@@ -195,11 +242,13 @@ func DeleteComment(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(`{"success": true}`))
 }
 
+// Get the owner's ID of a comment
 func GetCommentOwnerID(r *http.Request) (int, error) {
+	// Extract the comment ID from the route parameter
 	commentID := chi.URLParam(r, "comment_id")
 
 	var ownerID int
-	// Query the database for the user_id associated with the given postID
+	// Query the database for the user_id associated with the given commentID
 	err := db.DB.QueryRow("SELECT user_id FROM comments WHERE id = ?", commentID).Scan(&ownerID)
 	if err != nil {
 		return -1, err

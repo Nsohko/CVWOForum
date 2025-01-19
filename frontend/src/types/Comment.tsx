@@ -1,4 +1,4 @@
-// Define the post type
+// Represents a comment (both top-level and nested)
 type PostComment = {
     id: number;
     post_id: number;
@@ -9,7 +9,7 @@ type PostComment = {
     created_at: string;
 };
 
-// Utility function to initialize default values
+// Utility function to initialize default placeholder comment
 export const getDefaultPostComment = (): PostComment => {
     return {
         id: -1,

@@ -2,6 +2,7 @@ package models
 
 import "time"
 
+// models a post
 type Post struct {
 	ID        int       `json:"id"`
 	Title     string    `json:"title"`

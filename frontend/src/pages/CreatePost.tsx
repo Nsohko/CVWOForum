@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+// Page to create a post
 const CreatePost: React.FC = () => {
     const [newPost, setNewPost] = useState<Post>(getDefaultPost()); // State to hold form data
     const [error, setError] = useState<string | null>(null);
@@ -21,7 +22,6 @@ const CreatePost: React.FC = () => {
 
         try {
             // Make the POST request with Axios
-
             if (user == null) {
                 setError("Not logged in");
                 return;
@@ -29,7 +29,7 @@ const CreatePost: React.FC = () => {
 
             const updatedPost = { ...newPost }; // Create a copy to avoid directly mutating state
             updatedPost.author = user.id;
-            updatedPost.created_at = new Date().toISOString(); // Set current datetime in ISO 8601 format
+            updatedPost.created_at = new Date().toISOString(); // Set current datetime
             const response = await apiClient.post("/api/posts", updatedPost);
 
             if (response.status === 201) {
