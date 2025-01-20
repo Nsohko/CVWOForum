@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	db "sample-go-app/internal/database"
-	"sample-go-app/internal/models"
+	db "backend/internal/database"
+	"backend/internal/models"
 
 	"github.com/go-chi/chi/v5"
 	_ "modernc.org/sqlite"

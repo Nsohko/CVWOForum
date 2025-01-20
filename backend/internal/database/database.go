@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"log"
 
-	"sample-go-app/internal/models"
+	"backend/internal/models"
 
 	"golang.org/x/crypto/bcrypt"
 	_ "modernc.org/sqlite"
@@ -15,7 +15,7 @@ var PostsList []models.Post
 
 func InitDatabase() {
 	var err error
-	DB, err = sql.Open("sqlite", "./database.db")
+	DB, err = sql.Open("sqlite", "./database/database.db")
 	if err != nil {
 		log.Fatalf("Failed to connect to the database: %v", err)
 	}

@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"sample-go-app/internal/auth"
-	"sample-go-app/internal/handlers"
+	"backend/internal/auth"
+	"backend/internal/handlers"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/jwtauth/v5"

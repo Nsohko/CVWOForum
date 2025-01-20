@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	"sample-go-app/internal/auth"
-	db "sample-go-app/internal/database"
-	"sample-go-app/internal/router"
+	"backend/internal/auth"
+	db "backend/internal/database"
+	"backend/internal/router"
 
 	_ "modernc.org/sqlite"
 )

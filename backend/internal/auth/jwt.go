@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"sample-go-app/internal/models"
+	"backend/internal/models"
 
 	"github.com/go-chi/jwtauth/v5"
 )

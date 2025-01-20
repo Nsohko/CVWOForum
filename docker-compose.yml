@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80" # Map the host's port 3000 to the container's port 80 (Nginx default)
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080" # Map the host's port 8080 to the container's port 8080
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+# docker-compose up --build

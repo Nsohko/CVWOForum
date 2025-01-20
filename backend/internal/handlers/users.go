@@ -1,12 +1,12 @@
 package handlers
 
 import (
+	"backend/internal/auth"
+	db "backend/internal/database"
+	"backend/internal/models"
 	"database/sql"
 	"encoding/json"
 	"net/http"
-	"sample-go-app/internal/auth"
-	db "sample-go-app/internal/database"
-	"sample-go-app/internal/models"
 	"strings"
 
 	"github.com/go-chi/chi/v5"

@@ -1,7 +1,7 @@
 package router
 
 import (
-	"sample-go-app/internal/routes"
+	"backend/internal/routes"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"

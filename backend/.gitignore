@@ -6,3 +6,6 @@
 # Editor
 .idea/*
 .vscode/*
+
+# Compiled binary
+main.exe
