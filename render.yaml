@@ -4,6 +4,7 @@ services:
   - type: web
     name: CVWOfrontend
     env: docker
+    plan: free
     dockerfilePath: ./frontend/Dockerfile # Path to the frontend Dockerfile
     envVars:
       - key: REACT_APP_API_URL
@@ -12,6 +13,7 @@ services:
   - type: web
     name: CVWObackend
     env: docker
+    plan: free
     dockerfilePath: ./backend/Dockerfile # Path to the backend Dockerfile
     envVars:
       - key: PORT
