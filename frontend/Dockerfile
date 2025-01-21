@@ -23,6 +23,9 @@ FROM nginx:stable-alpine
 # Copy the built app to the Nginx serving directory
 COPY --from=build /app/build /usr/share/nginx/html
 
+# Copy the minimal Nginx configuration
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+
 # Expose port 80 to serve the app
 EXPOSE 80
 
