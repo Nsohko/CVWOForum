@@ -11,6 +11,10 @@ RUN yarn install
 # Copy the app's source code
 COPY . .
 
+# Set the environment variable for the build step
+ARG REACT_APP_API_URL
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+
 RUN yarn build
 
 # Use Nginx base image for serving the built files
