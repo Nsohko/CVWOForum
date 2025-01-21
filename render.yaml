@@ -6,6 +6,7 @@ services:
     env: docker
     plan: free
     dockerfilePath: ./frontend/Dockerfile # Path to the frontend Dockerfile
+    dockerContext: ./frontend
     envVars:
       - key: REACT_APP_API_URL
         value: https://CVWObackend.onrender.com
@@ -15,6 +16,7 @@ services:
     env: docker
     plan: free
     dockerfilePath: ./backend/Dockerfile # Path to the backend Dockerfile
+    dockerContext: ./backend
     envVars:
       - key: PORT
         value: 8080
