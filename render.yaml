@@ -1,6 +1,19 @@
+# render.yaml
+
 services:
-  - type: docker-compose
-    name: CVWOForum
+  - type: web
+    name: CVWOfrontend
     env: docker
-    dockerComposeFilePath: ./docker-compose.yaml
-    autoDeploy: true
+    dockerfilePath: ./frontend/Dockerfile # Path to the frontend Dockerfile
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://CVWObackend.onrender.com
+
+  - type: web
+    name: CVWObackend
+    env: docker
+    dockerfilePath: ./backend/Dockerfile # Path to the backend Dockerfile
+    envVars:
+      - key: PORT
+        value: 8080
+
