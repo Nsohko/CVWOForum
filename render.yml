@@ -1,0 +1,6 @@
+services:
+  - type: docker-compose
+    name: CVWOForum
+    env: docker
+    dockerComposeFilePath: ./docker-compose.yaml
+    autoDeploy: true

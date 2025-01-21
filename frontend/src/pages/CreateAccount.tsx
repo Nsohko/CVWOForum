@@ -28,7 +28,7 @@ function CreateAccount() {
             if (response.status === 200) {
                 await processLogin(userData, dispatch);
                 setUserData(getDefaultUser());
-                alert("Created account successfully!");
+                alert("Created account successfully! Logging in...");
                 const redirectTo = (location.state as { from: string })?.from || "/";
                 navigate(redirectTo);
             }
