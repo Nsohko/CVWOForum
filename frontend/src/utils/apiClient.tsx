@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 const baseURL = process.env.REACT_APP_API_URL;
 
 if (!baseURL) {
-  console.warn("REACT_APP_API_URL is not defined. Defaulting to localhost.");
+    console.warn("REACT_APP_API_URL is not defined. Defaulting to localhost.");
 }
 
 const apiClient = axios.create({
-  baseURL: baseURL || "http://localhost:8080", // Fallback for local development
-  withCredentials: true,
+    baseURL: baseURL || "http://localhost:8080", // Fallback for local development
+    withCredentials: true,
 });
 
 // helper function to handle Axios errors when communicating with the server
