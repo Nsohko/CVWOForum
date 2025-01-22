@@ -69,7 +69,7 @@ const Posts: React.FC = () => {
                 alert("Comment added successfully!");
 
                 // Add the new comment to the current comments state
-                setComments((prevComments) => [...prevComments, response.data]);
+                setComments((prevComments) => [response.data, ...prevComments]);
                 setNewComment(getDefaultPostComment); // Clear the comment input
                 setOpen(false); // Close the comment form
             } else {

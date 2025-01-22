@@ -21,6 +21,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
 
     const [replying, setReplying] = useState<boolean>(false); // State for reply input toggle
     const [editing, setEditing] = useState<boolean>(false); // State for edit input toggle
+    const [commentState, setCommentState] = useState<PostComment>(comment);
     const [newComment, setNewComment] = useState<PostComment>(getDefaultPostComment()); // Stores edited comment temporarily
 
     // Access user ID from Redux store
@@ -73,7 +74,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                 if (response.status === 200) {
                     // Successfully created the comment
                     setEditing(false); // Exit edit mode
-                    navigate(0);
+                    setCommentState(updatedComment);
                 } else {
                     setError("Failed to create comment");
                 }
@@ -109,7 +110,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                 if (response.status === 201) {
                     alert("Reply posted successfully!");
                     setReplying(false); // Exit reply mode
-                    navigate(0);
+                    navigate(`/posts/${comment.post_id}/comments/${comment.id}`);
                 } else {
                     setError("Failed to post reply");
                 }
@@ -234,12 +235,12 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                                                 variant="body2"
                                                 style={{ marginBottom: "1px", fontSize: "1.25rem", color: "black" }}
                                             >
-                                                {comment.content}
+                                                {commentState.content}
                                             </Typography>
                                             <br />
                                             <Typography variant="body2" style={{ fontSize: "0.85rem", color: "black" }}>
-                                                Posted by {comment.username} on{" "}
-                                                {new Date(comment.created_at).toLocaleString(undefined, {
+                                                Posted by {commentState.username} on{" "}
+                                                {new Date(commentState.created_at).toLocaleString(undefined, {
                                                     year: "numeric",
                                                     month: "2-digit",
                                                     day: "2-digit",

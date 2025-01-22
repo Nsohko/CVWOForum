@@ -57,7 +57,7 @@ const TopicPosts: React.FC = () => {
     return (
         <>
             <h3>Welcome to Sai forum.</h3>
-            <Link to="/" style={{ textDecoration: "none" }}>
+            <Link to="/" style={{ textDecoration: "none", marginRight: "10px" }}>
                 <Button variant="contained" color="secondary">
                     Back to topics
                 </Button>
