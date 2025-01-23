@@ -8,8 +8,8 @@
 .vscode/*
 
 # Database
-.database/database.db
-.database/backups/*
+database/database.db
+database/backups/*
 
 # Compiled binary
 main.exe
