@@ -13,7 +13,7 @@ interface CommentDetailsProps {
 const CommentDetails: React.FC<CommentDetailsProps> = ({ parentComment, subComments }) => {
     return (
         <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
-            <div style={{ maxWidth: "600px", margin: "0 auto" }}>
+            <div style={{ maxWidth: "55%", margin: "0 auto" }}>
                 <Comment comment={parentComment} />
             </div>
             {subComments.length === 0 ? (

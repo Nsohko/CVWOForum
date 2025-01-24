@@ -132,7 +132,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
 
     return (
         <>
-            <div>
+            <Box sx={{ width: { xs: "90%", sm: "100%" }, margin: "0 auto", marginBottom: "16px" }}>
                 <Card
                     style={{
                         marginBottom: "16px",
@@ -289,12 +289,23 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                                                 <IconButton
                                                     onClick={handleEdit}
                                                     size="small"
-                                                    style={{ marginBottom: "4px" }}
+                                                    sx={{
+                                                        marginBottom: "4px",
+                                                        padding: { xs: "12px", sm: "8px" },
+                                                    }}
                                                     color="primary"
                                                 >
                                                     <Edit />
                                                 </IconButton>
-                                                <IconButton onClick={handleDelete} size="small" color="error">
+                                                <IconButton
+                                                    onClick={handleDelete}
+                                                    size="small"
+                                                    sx={{
+                                                        marginBottom: "4px",
+                                                        padding: { xs: "12px", sm: "8px" },
+                                                    }}
+                                                    color="error"
+                                                >
                                                     <Delete />
                                                 </IconButton>
                                             </>
@@ -305,7 +316,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                         )}
                     </CardContent>
                 </Card>
-            </div>
+            </Box>
         </>
     );
 };
