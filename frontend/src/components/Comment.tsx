@@ -110,7 +110,13 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                 if (response.status === 201) {
                     alert("Reply posted successfully!");
                     setReplying(false); // Exit reply mode
-                    navigate(`/posts/${comment.post_id}/comments/${comment.id}`);
+                    if (location.pathname === `/posts/${comment.post_id}/comments/${comment.id}`) {
+                        // If so, navigate back the post itself
+                        navigate(`/posts/${comment.post_id}/comments/${comment.id}`);
+                    } else {
+                        // Otherwise, reload the page or navigate back to the comments section
+                        navigate(0);
+                    }
                 } else {
                     setError("Failed to post reply");
                 }
@@ -276,10 +282,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                                         <IconButton
                                             onClick={handleReply}
                                             size="medium"
-                                            sx={{
-                                                marginBottom: "4px",
-                                                padding: { xs: "12px", sm: "8px" },
-                                            }}
+                                            sx={{ marginBottom: "4px" }}
                                             color="primary"
                                         >
                                             <Reply />
@@ -289,23 +292,12 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                                                 <IconButton
                                                     onClick={handleEdit}
                                                     size="small"
-                                                    sx={{
-                                                        marginBottom: "4px",
-                                                        padding: { xs: "12px", sm: "8px" },
-                                                    }}
+                                                    sx={{ marginBottom: "4px" }}
                                                     color="primary"
                                                 >
                                                     <Edit />
                                                 </IconButton>
-                                                <IconButton
-                                                    onClick={handleDelete}
-                                                    size="small"
-                                                    sx={{
-                                                        marginBottom: "4px",
-                                                        padding: { xs: "12px", sm: "8px" },
-                                                    }}
-                                                    color="error"
-                                                >
+                                                <IconButton onClick={handleDelete} size="small" color="error">
                                                     <Delete />
                                                 </IconButton>
                                             </>
