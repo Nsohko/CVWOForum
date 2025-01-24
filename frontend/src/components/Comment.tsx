@@ -141,7 +141,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                         border: "2px solid #ccc",
                         transition: "all 0.2s ease-in-out",
-                        padding: "0px",
+                        padding: "16px",
                     }}
                     onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
                     onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
@@ -230,7 +230,6 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                                     sx={{
                                         display: "flex",
                                         alignItems: "center",
-                                        flexDirection: { xs: "column", sm: "row" },
                                         width: "100%",
                                     }}
                                 >
@@ -241,7 +240,13 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                                         >
                                             <Typography
                                                 variant="body2"
-                                                style={{ marginBottom: "1px", fontSize: "1.25rem", color: "black" }}
+                                                sx={{
+                                                    fontSize: "1.25rem",
+                                                    color: "black",
+                                                    wordBreak: "break-word",
+                                                    whiteSpace: "pre-wrap",
+                                                    overflowWrap: "break-word",
+                                                }}
                                             >
                                                 {commentState.content}
                                             </Typography>
