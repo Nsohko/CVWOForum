@@ -137,6 +137,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                     style={{
                         marginBottom: "16px",
                         borderRadius: "8px",
+                        width: "100%",
                         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                         border: "2px solid #ccc",
                         transition: "all 0.2s ease-in-out",
@@ -225,8 +226,15 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                             </>
                         ) : (
                             <>
-                                <Box style={{ display: "flex", alignItems: "center" }}>
-                                    <Box style={{ flex: 1 }}>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        flexDirection: { xs: "column", sm: "row" },
+                                        width: "100%",
+                                    }}
+                                >
+                                    <Box sx={{ flex: 1 }}>
                                         <Link
                                             to={`/posts/${comment.post_id}/comments/${comment.id}`}
                                             style={{ textDecoration: "none" }}
@@ -253,7 +261,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                                         </Link>
                                     </Box>
                                     <Box
-                                        style={{
+                                        sx={{
                                             display: "flex",
                                             flexDirection: "column",
                                             alignItems: "flex-end",
@@ -262,8 +270,11 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                                     >
                                         <IconButton
                                             onClick={handleReply}
-                                            size="small"
-                                            style={{ marginBottom: "4px" }}
+                                            size="medium"
+                                            sx={{
+                                                marginBottom: "4px",
+                                                padding: { xs: "12px", sm: "8px" },
+                                            }}
                                             color="primary"
                                         >
                                             <Reply />

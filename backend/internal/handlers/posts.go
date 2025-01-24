@@ -307,6 +307,15 @@ func AddPostComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Fetch the username from the database based on user_id
+	var username string
+	err = db.DB.QueryRow("SELECT username FROM users WHERE id = ?", comment.Author).Scan(&username)
+	if err != nil {
+		comment.Username = "Unknown"
+	} else {
+		comment.Username = username // Assuming Comment model has an AuthorName field
+	}
+
 	// Retrieve the last inserted ID for the comment
 	id, _ := res.LastInsertId()
 	comment.ID = int(id)

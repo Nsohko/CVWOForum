@@ -6,6 +6,8 @@ import "./index.css";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
+document.title = "CVWO Forum";
+
 const root = createRoot(document.getElementById("root") as HTMLElement);
 
 root.render(
