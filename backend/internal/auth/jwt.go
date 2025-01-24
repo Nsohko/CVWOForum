@@ -32,6 +32,7 @@ func SetTokenCookie(w http.ResponseWriter, token string) {
 		Name:     "jwt",
 		Value:    token,
 		Path:     "/",
+		Domain:   "cvwobackend.onrender.com",
 		HttpOnly: true,
 		Secure:   true,
 		SameSite: http.SameSiteNoneMode,
