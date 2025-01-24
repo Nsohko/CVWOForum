@@ -7,9 +7,13 @@ services:
     plan: free
     dockerfilePath: ./frontend/Dockerfile # Path to the frontend Dockerfile
     dockerContext: ./frontend
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://cvwobackend.onrender.com/*
     envVars:
       - key: REACT_APP_API_URL
-        value: https://CVWObackend.onrender.com
+        value: /api
 
   - type: web
     name: CVWObackend

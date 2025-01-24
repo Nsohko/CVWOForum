@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
@@ -35,12 +34,10 @@ func SetTokenCookie(w http.ResponseWriter, token string) {
 		Path:     "/",
 		HttpOnly: true,
 		Secure:   true,
-		SameSite: http.SameSiteNoneMode,
+		SameSite: http.SameSiteLaxMode,
 		Expires:  time.Now().Add(time.Hour * 72),
 	}
 	http.SetCookie(w, cookie)
-	fmt.Println("Cookie set successfully")
-	fmt.Print(token)
 }
 
 // Clear the JWT token
