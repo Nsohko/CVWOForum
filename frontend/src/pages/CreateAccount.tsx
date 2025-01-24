@@ -25,7 +25,7 @@ function CreateAccount() {
             // Make the API request using axios
             const response = await apiClient.post("/api/create_account", userData);
 
-            if (response.status === 200) {
+            if (response.status === 201) {
                 await processLogin(userData, dispatch);
                 setUserData(getDefaultUser());
                 alert("Created account successfully! Logging in...");
