@@ -1,0 +1,13 @@
+# render.yaml
+
+services:
+  - type: web
+    name: CVWOForum
+    env: docker
+    plan: standard
+    dockerfilePath: ./Dockerfile # Path to the frontend Dockerfile
+    envVars:
+      - key: REACT_APP_API_URL
+        value: /api
+
+

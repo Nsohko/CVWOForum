@@ -3,7 +3,11 @@ FROM node:18 AS build
 WORKDIR /app
 COPY frontend/ ./frontend/
 WORKDIR /app/frontend
-RUN yarn install && yarn build && ls -l ./build
+RUN yarn install 
+# Set the environment variable for the build step
+ARG REACT_APP_API_URL
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+RUN yarn build
 
 # Step 2: Build the Golang backend
 FROM golang:1.23-bookworm
