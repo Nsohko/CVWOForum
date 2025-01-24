@@ -8,7 +8,7 @@ if (!baseURL) {
 }
 
 const apiClient = axios.create({
-    baseURL: baseURL || "http://localhost:8080", // Fallback for local development
+    baseURL: "/", // Fallback for local development
     withCredentials: true,
 });
 

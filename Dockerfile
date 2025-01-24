@@ -4,9 +4,6 @@ WORKDIR /app
 COPY frontend/ ./frontend/
 WORKDIR /app/frontend
 RUN yarn install 
-# Set the environment variable for the build step
-ARG REACT_APP_API_URL
-ENV REACT_APP_API_URL=$REACT_APP_API_URL
 RUN yarn build
 
 # Step 2: Build the Golang backend
