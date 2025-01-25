@@ -3,6 +3,8 @@ FROM node:18 AS build
 WORKDIR /app
 COPY frontend/ ./frontend/
 WORKDIR /app/frontend
+ARG REACT_APP_API_URL=/
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
 RUN yarn install 
 RUN yarn build
 
@@ -11,6 +13,7 @@ FROM golang:1.23-bookworm
 WORKDIR /app
 COPY backend/ ./backend/
 WORKDIR /app/backend
+RUN go mod download
 RUN go build -o server .
 
 # Make the binary and scripts executable
@@ -23,7 +26,7 @@ COPY --from=build /app/frontend/build ./frontend/build
 
 # Create cron job to take backup
 RUN apt-get update && apt-get install -y cron
-RUN crontab -l | { cat; echo "0 0 * * * bash /app/database/backup.sh"; }
+RUN crontab -l | { cat; echo "0 0 * * * bash /app/backend/database/backup.sh"; }
 
 # Expose port and start the app
 EXPOSE 8080
