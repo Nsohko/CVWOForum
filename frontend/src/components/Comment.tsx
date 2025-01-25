@@ -111,11 +111,10 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                     alert("Reply posted successfully!");
                     setReplying(false); // Exit reply mode
                     if (location.pathname === `/posts/${comment.post_id}/comments/${comment.id}`) {
-                        // If so, navigate back the post itself
-                        navigate(`/posts/${comment.post_id}/comments/${comment.id}`);
+                        navigate(0);
                     } else {
                         // Otherwise, reload the page or navigate back to the comments section
-                        navigate(0);
+                        navigate(`/posts/${comment.post_id}/comments/${comment.id}`);
                     }
                 } else {
                     setError("Failed to post reply");
