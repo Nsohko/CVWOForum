@@ -26,10 +26,10 @@ COPY --from=build /app/frontend/build ./frontend/build
 
 # Create cron job to take backup
 RUN apt-get update && apt-get install -y cron
-RUN crontab -l | { cat; echo "* * * * * bash /app/database/backup.sh"; } | crontab -
+RUN crontab -l | { cat; echo "* * * * * cd /app/backend/database && bash /app/backend/database/backup.sh"; } | crontab -
 
 # Expose port and start the app
 EXPOSE 8080
 WORKDIR /app/backend
-CMD ["sh", "-c", "cron && ./server"]
+CMD ["sh", "-c", "cron -f && ./server"]
 
