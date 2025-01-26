@@ -74,7 +74,7 @@ const Home: React.FC = () => {
 
     return (
         <div style={{ padding: "20px", textAlign: "center" }}>
-            <h2>Welcome to Sai forum.</h2>
+            <h2>Welcome to Sai&apos;s CVWO forum.</h2>
 
             <Link to="/create-post" style={{ textDecoration: "none" }}>
                 <Button variant="contained" color="secondary">

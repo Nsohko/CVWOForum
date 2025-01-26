@@ -39,7 +39,7 @@ const Header: React.FC = () => {
                     }}
                 >
                     <Link to="/" style={{ color: "inherit", textDecoration: "none" }}>
-                        Sai Forum
+                        Sai&apos;s Forum
                     </Link>
                 </Typography>
 
