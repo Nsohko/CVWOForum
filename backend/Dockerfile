@@ -22,7 +22,7 @@ RUN chmod +x ./database/backup.sh
 RUN apt-get update && apt-get install -y cron
 
 # Add the cron job
-RUN crontab -l | { cat; echo "0 0 * * * bash /app/database/backup.sh"; } | crontab -
+RUN crontab -l | { cat; echo "* * * * * bash /app/database/backup.sh"; } | crontab -
 
 # Expose the port your app listens on
 EXPOSE 8080
