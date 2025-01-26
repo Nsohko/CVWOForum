@@ -1,6 +1,6 @@
 # CVWO FORUM
 
-Name: Saripalli Bhagat Sai Reddy
+#### By Saripalli Bhagat Sai Reddy
 
 Welcome to my CVWO Forum application!
 
