@@ -63,7 +63,7 @@ The website will be available at http://localhost:8080
 
 Here I have included a brief user manual on how to run the web forum.
 
-1.	Creating account / logging in
+### 1.	Creating account / logging in
     
     Upon launching the website, you will be greeted with the home page, consisting of a list of possible discussion topics. Clicking each topic will show you the relevant posts.
 
@@ -76,21 +76,21 @@ Here I have included a brief user manual on how to run the web forum.
     ```
     <br />
 
-2.	Creating Posts 
+### 2.	Creating Posts 
     
     After successfully logging in, you may create posts under any existing topic by clicking the ‘Add Post’ button
 
     You can click on any post to expand its details  
     <br/>
 
-3.	Adding comments
+### 3.	Adding comments
         
     Similarly, after logging in and clicking on a post, you may add a comment using the ‘Add Comment’ button below
 
     Comments also support nested replies (i.e. you can reply to any comment), and this currently has no depth limit (i.e. theoretically, we can support ‘infinite’ depth of nested comments). To view subcomments, simply click on any comment  
     <br/>
     
-4.	Editing Posts / Comments
+### 4.	Editing Posts / Comments
 
     Standard users are able to edit and delete their own posts / comments
 
@@ -99,7 +99,7 @@ Here I have included a brief user manual on how to run the web forum.
     Note that admin users can also add / delete topics  
     <br/>
     
-5.	Mobile View
+### 5.	Mobile View
     
     Generally, all functionalities work across browsers and operating systems (including mobile phones)
 
