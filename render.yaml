@@ -8,6 +8,6 @@ services:
     dockerfilePath: ./Dockerfile # Path to the frontend Dockerfile
     envVars:
       - key: REACT_APP_API_URL
-        value: /api
+        value: /
 
 

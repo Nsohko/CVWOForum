@@ -3,9 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const baseURL = process.env.REACT_APP_API_URL || "http://localhost:8080";
 
-if (!baseURL) {
-    console.warn("REACT_APP_API_URL is not defined. Defaulting to localhost.");
-}
+console.warn(`API link set to ${baseURL}`);
 
 const apiClient = axios.create({
     baseURL: baseURL,
