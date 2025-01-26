@@ -31,5 +31,5 @@ RUN crontab -l | { cat; echo "* * * * * cd /app/backend/database && bash /app/ba
 # Expose port and start the app
 EXPOSE 8080
 WORKDIR /app/backend
-CMD ["sh", "-c", "cron -f && ./server"]
+CMD ["sh", "-c", "cron && ./server"]
 

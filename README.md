@@ -10,7 +10,9 @@ To deploy the app locally, there are 3 methods:
 
 ### Deploy without Docker  (for development)
 
-To deploy with docker, you can do the following. Start at the root directory (```CVWOForum/```)
+To deploy with docker, you can do the following. Please ensure that Go, Node.js and yarn have been installed  
+
+Start at the root directory (```CVWOForum/```)
 
 1. Deploy frontend
 
@@ -39,7 +41,7 @@ The website can now be accessed at http://localhost:3000
 NOTE: Ensure docker is installed
 Navigate to the root directory (```CVWOForum/```)
 
-Enter the following:
+Enter the following:  
 ```docker-compose up --build```
 
 Once again, the website should be available at http://localhost:3000
