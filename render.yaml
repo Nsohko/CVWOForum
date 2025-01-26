@@ -5,7 +5,7 @@ services:
     name: CVWOForum
     env: docker
     plan: standard
-    dockerfilePath: ./Dockerfile # Path to the frontend Dockerfile
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: REACT_APP_API_URL
         value: /

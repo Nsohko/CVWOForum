@@ -10,7 +10,7 @@ import { useParams, useNavigate } from "react-router-dom"; // For navigation
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 
-// Page to render a post ad its top-level comments
+// Page to render a post and its top-level comments
 const Posts: React.FC = () => {
     const { post_id } = useParams<{ post_id: string }>();
     const navigate = useNavigate();
@@ -20,15 +20,14 @@ const Posts: React.FC = () => {
     const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated) && user != null;
 
     const [post, setPost] = useState<Post>(getDefaultPost()); // State to hold posts
-    const [comments, setComments] = useState<PostComment[]>([]); // State to hold posts
+    const [comments, setComments] = useState<PostComment[]>([]); // State to hold commentss
 
     const [loading, setLoading] = useState<boolean>(true); // State to manage loading state
     const [error, setError] = useState<string | null>(null); // State to manage errors
 
     const [open, setOpen] = useState<boolean>(false); // State to toggle the comment form visibility
 
-    // Initialize `newComment` with post_id from params or default to 0 if undefined
-    const [newComment, setNewComment] = useState<PostComment>(getDefaultPostComment()); // Set the post_id from URL params or default to 0
+    const [newComment, setNewComment] = useState<PostComment>(getDefaultPostComment());
 
     // Fetch post from the backend
     useEffect(() => {

@@ -11,10 +11,13 @@ interface CommentDetailsProps {
 
 // Display a parent comment and all its subcomments
 const CommentDetails: React.FC<CommentDetailsProps> = ({ parentComment, subComments }) => {
+    console.log("Rendered Parent Comment:", parentComment);
+
     return (
         <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
             <div style={{ maxWidth: "55%", margin: "0 auto" }}>
-                <Comment comment={parentComment} />
+                <Typography variant="h5">Parent Comment</Typography>
+                <Comment key={parentComment.id} comment={parentComment} />
             </div>
             {subComments.length === 0 ? (
                 <Typography variant="h6">No replies</Typography>

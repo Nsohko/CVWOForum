@@ -8,7 +8,7 @@ interface AuthState {
     isAuthenticated: boolean;
 }
 
-// Initllay, no userData will be stored
+// Initially, no userData will be stored
 // and the user will not be authenticated
 const initialState: AuthState = {
     user: null,

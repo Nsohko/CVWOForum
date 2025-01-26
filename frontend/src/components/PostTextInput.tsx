@@ -87,7 +87,7 @@ const TextInput: React.FC<TextInputProps> = ({ newPost, setNewPost, handleSubmit
                                         onChange={(e) =>
                                             setNewPost({
                                                 ...newPost,
-                                                topic: e.target.value as string, // Use direct inline handler
+                                                topic: e.target.value as string,
                                             })
                                         }
                                     >

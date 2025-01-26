@@ -80,7 +80,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                 }
             } else {
                 // Enter edit mode
-                setNewComment({ ...comment });
+                setNewComment({ ...commentState });
                 setEditing(true);
             }
         } catch (err) {
@@ -115,6 +115,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                     } else {
                         // Otherwise, reload the page or navigate back to the comments section
                         navigate(`/posts/${comment.post_id}/comments/${comment.id}`);
+                        navigate(0);
                     }
                 } else {
                     setError("Failed to post reply");

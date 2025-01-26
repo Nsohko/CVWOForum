@@ -49,6 +49,7 @@ const Home: React.FC = () => {
             const response = await apiClient.post(`/api/topics`, newTopic);
             setTopics((prev) => [...prev, response.data]); // Add new topic to the state
             setNewTopic(getDefaultPostTopic()); // Reset input field
+            alert("Topic created successfully!");
         } catch (err) {
             handleAxiosError(err, setError, navigate);
         }

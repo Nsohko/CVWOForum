@@ -18,11 +18,11 @@ func Setup() chi.Router {
 
 	// CORS middleware configuration
 	r.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:3000", "https://CVWOfrontend.onrender.com"}, // Frontend origins
-		AllowedMethods:   []string{"GET", "POST", "PATCH", "DELETE"},                             // HTTP methods
-		AllowedHeaders:   []string{"Content-Type", "Authorization"},                              // Headers allowed in requests
-		AllowCredentials: true,                                                                   // Allow cookies and credentials
-		MaxAge:           300,                                                                    // Cache preflight requests for 5 minutes
+		AllowedOrigins:   []string{"http://localhost:3000"},          // Frontend origins
+		AllowedMethods:   []string{"GET", "POST", "PATCH", "DELETE"}, // HTTP methods
+		AllowedHeaders:   []string{"Content-Type", "Authorization"},  // Headers allowed in requests
+		AllowCredentials: true,                                       // Allow cookies and credentials
+		MaxAge:           300,                                        // Cache preflight requests for 5 minutes
 	}))
 
 	serveStaticFiles(r)
@@ -30,7 +30,7 @@ func Setup() chi.Router {
 	return r
 }
 
-// Serve static recat frontend
+// Serve static react frontend
 func serveStaticFiles(r chi.Router) {
 	workDir, _ := os.Getwd()
 

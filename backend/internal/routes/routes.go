@@ -28,7 +28,6 @@ func UnprotectedRoutes() func(r chi.Router) {
 
 func ProtectedRoutes() func(r chi.Router) {
 	return func(r chi.Router) {
-		// Add JWT authentication middleware
 		r.Use(jwtauth.Verifier(auth.TokenAuth))      // Verify the JWT token
 		r.Use(jwtauth.Authenticator(auth.TokenAuth)) // Enforce authentication
 
@@ -45,7 +44,7 @@ func ProtectedRoutes() func(r chi.Router) {
 		})
 
 		r.Post("/api/posts/{post_id}/comments", handlers.AddPostComment)             // add new comment to the post
-		r.Post("/api/posts/{post_id}/comments/{comment_id}", handlers.AddSubComment) //add new subcomment
+		r.Post("/api/posts/{post_id}/comments/{comment_id}", handlers.AddSubComment) // add new subcomment
 
 		// Admin / Owners for comment-based actions
 		r.Group(func(r chi.Router) {
@@ -56,7 +55,7 @@ func ProtectedRoutes() func(r chi.Router) {
 			r.Delete("/api/posts/{post_id}/comments/{comment_id}", handlers.DeleteComment)
 		})
 
-		// Admin-only action
+		// Admin-only actions
 		r.Group(func(r chi.Router) {
 			r.Use(auth.AdminMiddleware())
 

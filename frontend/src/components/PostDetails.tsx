@@ -33,7 +33,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ post }: PostDetailsProps) => 
             try {
                 await apiClient.delete(`/api/posts/${post_id}`);
                 alert("Post deleted successfully!");
-                navigate(`/topics/${post.topic}`); // Redirect to home page after delete
+                navigate(`/topics/${post.topic}`); // Redirect to topic page after delete
             } catch (err) {
                 handleAxiosError(err, setError, navigate);
                 alert("Error deleting post");
@@ -103,7 +103,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ post }: PostDetailsProps) => 
                     )}
                     <Link to={`/topics/${post.topic}`}>
                         <Button variant="contained" color="secondary">
-                            Back to posts
+                            Back to topic
                         </Button>
                     </Link>
                     <Button variant="contained" color="secondary" onClick={() => navigate(-1)}>

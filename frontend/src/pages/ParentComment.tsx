@@ -42,7 +42,7 @@ const ParentComment: React.FC = () => {
         };
 
         fetchPost();
-    }, [comment_id]);
+    }, [post_id, comment_id]);
 
     return (
         <>

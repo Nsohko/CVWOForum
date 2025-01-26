@@ -6,14 +6,14 @@ import "../index.css";
 import { AppDispatch } from "../redux/Store";
 import { processLogin } from "../utils/authUtils";
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom"; // To handle redirects
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 // Page to log in
 function Login() {
     const [userData, setUserData] = useState<User>(getDefaultUser());
     const [error, setError] = useState("");
-    const navigate = useNavigate(); // React Router hook for navigation
+    const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch<AppDispatch>();
 

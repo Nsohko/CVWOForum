@@ -16,7 +16,6 @@ func main() {
 
 	fmt.Println("Hello World")
 	fmt.Println("For debugging, admin username/password: admin123")
-	fmt.Println("Non-admin username/password: 123")
 
 	// Initialize Database
 	db.InitDatabase()
