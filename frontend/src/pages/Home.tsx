@@ -24,6 +24,7 @@ const Home: React.FC = () => {
         const fetchTopics = async () => {
             try {
                 const response = await apiClient.get(`/api/topics`);
+                console.log("Fetched topics:", response.data);
                 setTopics(response.data); // Update topics state with fetched data
             } catch (err) {
                 handleAxiosError(err, setError);
