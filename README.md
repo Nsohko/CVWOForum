@@ -4,8 +4,6 @@
 
 Welcome to my CVWO Forum application!
 
-The live website can be accessed [here](https://cvwoforum.onrender.com)
-
 ## Local Deployment
 
 To deploy the app locally, there are 3 methods:
