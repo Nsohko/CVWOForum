@@ -65,42 +65,38 @@ Here I have included a brief user manual on how to run the web forum.
 
 ### 1.	Creating account / logging in
     
-    Upon launching the website, you will be greeted with the home page, consisting of a list of possible discussion topics. Clicking each topic will show you the relevant posts.
+Upon launching the website, you will be greeted with the home page, consisting of a list of possible discussion topics. Clicking each topic will show you the relevant posts.
 
-    Please create an account by clicking on the button at the top right of the screen.
+Please create an account by clicking on the button at the top right of the screen.
 
-    Alternatively, you may log in using the following credentials to access the admin account. This account has already been pre-created.
-    ```
-    Username: admin123
-    Password: admin123
-    ```
-    <br />
+Alternatively, you may log in using the following credentials to access the admin account. This account has already been pre-created.
+```
+Username: admin123
+Password: admin123
+```
 
 ### 2.	Creating Posts 
     
-    After successfully logging in, you may create posts under any existing topic by clicking the ‘Add Post’ button
+After successfully logging in, you may create posts under any existing topic by clicking the ‘Add Post’ button
 
-    You can click on any post to expand its details  
-    <br/>
+You can click on any post to expand its details  
 
 ### 3.	Adding comments
         
-    Similarly, after logging in and clicking on a post, you may add a comment using the ‘Add Comment’ button below
+Similarly, after logging in and clicking on a post, you may add a comment using the ‘Add Comment’ button below
 
-    Comments also support nested replies (i.e. you can reply to any comment), and this currently has no depth limit (i.e. theoretically, we can support ‘infinite’ depth of nested comments). To view subcomments, simply click on any comment  
-    <br/>
+Comments also support nested replies (i.e. you can reply to any comment), and this currently has no depth limit (i.e. theoretically, we can support ‘infinite’ depth of nested comments). To view subcomments, simply click on any comment  
     
 ### 4.	Editing Posts / Comments
 
-    Standard users are able to edit and delete their own posts / comments
+Standard users are able to edit and delete their own posts / comments
 
-    Admin users (from step 1) can edit and delete any posts / comment
+Admin users (from step 1) can edit and delete any posts / comment
 
-    Note that admin users can also add / delete topics  
-    <br/>
+Note that admin users can also add / delete topics  
     
 ### 5.	Mobile View
     
-    Generally, all functionalities work across browsers and operating systems (including mobile phones)
+Generally, all functionalities work across browsers and operating systems (including mobile phones)
 
-    However, there is some issues rendering comments on smaller screens
+However, there is some issues rendering comments on smaller screens
